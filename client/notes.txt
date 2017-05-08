@@ -1,0 +1,12 @@
+X Use cookies (https://github.com/niyazpk/cookie-wrapper)
+X Make cookies backwards compatible
+X Automatically check for updated sections
+X Make data storage persistent
+X Add special notes (http://myobfuscate.com/)
+X Enable web-app features and icons
+X Add some colour
+X Add match feature
+X Add search feature
+- Add lerarenquotes
+X Add rooster page
+- Add notifications (https://onesignal.com/apps/ea37f4d9-ac0f-4649-9e22-e16a8352e879/settings)

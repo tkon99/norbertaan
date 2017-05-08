@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="Norbertaan is een roosterwebsite voor het Norbertuscollege. Met onthoudfunctie, rooster matcher en nog veel meer!">
+		<meta name="keywords" content="rooster, norbertaan, norbertus">
+		<meta name="author" content="tkon99">
+		<title>Norbertaan | Voor het Norbertuscollege</title>
+		<link rel="stylesheet" type="text/css" href="css/normalize.css">
+		<link rel="stylesheet" type="text/css" href="css/grid12.min.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+		<link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="img/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="img/ms-icon-144x144.png">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/favicon.ico" type="image/x-icon">
+		<meta name="theme-color" content="#F8AF05">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+	</head>
+	<body>
+		<h1 id="title">Norbertaan</h1>
+		<div id="app">
+		</div>
+	</body>
+
+	<template data-template-name="newUser" type="x-tmpl-mustache">
+		<div class="center">
+			<h1 class="huge nomargin fit1">Welkom!</h1>
+			<i>Voer hieronder je leerlingnummer in:</i>
+			<h2 id="lln-wrap" class="fit2">12000<input type="number" class="minimalInput" id="lln" placeholder="1234" min="0000" max="9999" autofocus onkeyup="checkLln()"></h2>
+			<div id="continue-wrap" class="btn btn-black point" style="display: none;" onclick="finishLln()">
+				<a id="continue"></a>
+			</div>
+			<a class="btn btn-gray point" href="l.html" id="defaultSched">Standaard Rooster</a>
+		</div>
+	</template>
+
+	<template data-template-name="home" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4" id="nav-contain">
+					<div class="center">
+						<a class="btn btn-cyan point full" id="sched" href="l.html"><span class="fa fa-calendar"></span><span class="label">Rooster</span><span class="hotkey"><p>R</p></span></a>
+						<a class="btn btn-green point full" href="#lookup" id="sched-search"><span class="fa fa-question"></span><span class="label">Rooster zoeken</span><span class="hotkey"><p>Z</p></span></a>
+						<br><br><br>
+						<a class="btn btn-teal point full" id="magister" href="https://sgtongerlo.magister.net/" target="_blank">
+							<span class="fa fa-users"></span>Magister (leerling)
+						</a>
+						<a class="btn btn-pink point full" id="sched-match" href="#match"><span class="fa fa-heart"></span><span class="label">Rooster Matcher</span><span class="hotkey"><p>M</p></span></a>
+						<a class="btn btn-blue point full" id="clusteroverview" href="#cluster"><span class="fa fa-list"></span><span class="label">Clusteroverzicht</span><span class="hotkey"><p>C</p></span></a>
+						<br>
+						<!-- <a class="btn btn-orange full vis-{{visible}}" id="notice">Roosters matchen en opzoeken<br>is weer beschikbaar in september.</a> --><br>
+
+						<!-- <a class="btn btn-black full" id="fb-like" style="display: none;">
+							Ontvang nieuws over het Norbertus:<br>
+							<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fnorbertaan%2F&width=66&layout=button_count&action=like&size=small&show_faces=false&share=false&height=21&appId=393878407367718" width="66" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+							<p onclick="$(this).parent().remove(); Cookie.set('fb_seen', true);" class="point nomargin small">Sluiten</p>
+						</a> -->
+
+						<br>
+
+						<a class="btn btn-black point full" href="#settings" id="settings"><span class="fa fa-cog"></span><span class="label">Instellingen</span><span class="hotkey"><p>S</p></span></a>
+						{{{ads}}}
+						{{{special}}}
+					</div>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="about" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i><br>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<h1>Over Norbertaan</h1>
+					<p id="about-p">
+						Hallo {{name}}, super bedankt voor het gebruiken van Norbertaan. Hierbij een beetje geschiedenis: <br><br>De <a href="/wayback" target="_blank">eerste versie</a> van de website is uit 2012, ik begon toen net met programmeren en ergerde me aan het steeds opnieuw moeten zoeken naar mijn rooster. Toen moesten leerlingen nog inloggen in een speciaal systeem waarin het rooster verstopt zat. Een andere leerling had een link gemaakt waarin het rooster meteen bereikbaar was: ankewashier.tk (bestaat niet meer).<br><br>
+						Na enige tijd kwam Reinier (toen klasgenoot van mij) met nobertuz.nl. Echter had deze geen onthoudfunctie. Ik heb toen Norbertaan gemaakt om dit probleem voor mezelf op te lossen. Eerst op norbertaan.tk en later op norbertaan.nl.<br><br>
+						In 4 jaar tijd heb ik meer dan 50 versies gehad, met verschillen van kleine fixes tot complete veranderingen. Het is altijd een passie voor me geweest om iets te doen met de enorme hoeveelheid data die achter het rooster zit. Helaas zal ik over een jaar afscheid moeten nemen van het Norbertus.<br><br>
+						Zit jij in 2,3,4 havo/vwo, kun je programmeren en wil je Norbertaan overnemen? Stuur mij dan een bericht via Magister.<br><br>
+						<i>Met dank aan: Justin, Wouter, Willemijn en Koen.</i>
+					</p>
+					<p>
+						Norbertaan is een project van <a href="http://tkon99.github.io/" target="_blank">Thomas Konings</a>.
+					</p>
+					<a class="btn btn-black point full center" href="#settings"><span class="fa fa-arrow-left"></span> Terug naar instellingen</a>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="lookup" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i><br>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<h1>Rooster zoeken</h1>
+					<i>Typ een deel van de naam:</i><br>
+					<h2><input type="text" class="minimalInput" id="searchname" autofocus onkeyup="checkSearch()"></h2>
+					<div class="list-group" id="searchresults">
+					</div>
+					<a class="btn btn-black point full center" href="#"><span class="fa fa-arrow-left"></span> Terug naar overzicht</a>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="match" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i><br>
+		<div class="container-fluid">
+			<div class="row" id="searcher">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<h1>Rooster Matcher <span class="fa fa-heart"></span></h1>
+					<i>Typ een deel van de naam:</i><br>
+					<h2><input type="text" class="minimalInput" id="searchname" autofocus onkeyup="checkSearchMatch()"></h2>
+					<div class="list-group" id="searchresults">
+					</div>
+					<br>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+			<div class="row" id="matcher">
+				<h1 class="center" id="temp">Matching...</h1>
+				<div id="result" style="display: none;">
+					<h2>Match met <span id="persoon"></span></h2>
+					<i>Je deelt <span id="perc"></span>% van je lessen met deze persoon. (<span id="uur"></span> lessen per week)</i>
+					<div id="rooster"></div>
+					<br>
+					<br>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<a class="btn btn-black point full center" href="#"><span class="fa fa-arrow-left"></span> Terug naar overzicht</a>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="cluster" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i><br>
+		<div class="container-fluid">
+			<h1 class="center" id="temp">Rooster ophalen...</h1>
+			<div class="row" id="cluster" style="display: none">
+				<br><br>
+				<i>Klik op een uur om de personen te zien met wie je dan in de les zit.</i><br>
+				<div id="rooster">
+				</div>
+				<br>
+				<div id="resultheader" style="visibility: hidden">
+					<h3>Personen in <span id="lokaal"></span> <span id="uur"></span></h3>
+					<i id="updated">placeholder</i>
+				</div>
+				<div id="list-wrap">
+					<div class="list-group" id="clusterresults">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<a class="btn btn-black point full center" href="#"><span class="fa fa-arrow-left"></span> Terug naar overzicht</a>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="settings" type="x-tmpl-mustache">
+		<i>Voor {{name}}.</i><br>
+		<div class="container-fluid">
+			<div class="row" id="searcher">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<h1>Instellingen <span class="fa fa-cog"></span></h1>
+					<i>Pas Norbertaan aan!</i><br><br>
+					<a class="btn btn-orange point full center" onclick="deleteAccount()"><span class="fa fa-trash-o"></span> Account Verwijderen</a>
+					<a class="btn btn-cyan point full center" target="_blank" onclick="telegram(this)" id="telegram"><span class="fa fa-paper-plane"></span> Telegram Koppelen</a>
+					<i>Kies lettertype:</i>
+					<select class="btn btn-black point full" id="fontselect">
+						<option value="1">Standaard</option>
+						<option value="2">Serif</option>
+						<option value="3">OpenDyslexic</option>
+					</select><br>
+					<div class="center">
+						<i>Norbertaan verstuurt anonieme gegevens<br>voor het gebruik in analyses.</i>
+					</div>
+					<br><br>
+					<a class="btn btn-gray point full center" href="#about"><span class="fa fa-info"></span> Over Norbertaan</a>
+					<a class="btn btn-black point full center" href="#"><span class="fa fa-arrow-left"></span> Terug naar overzicht</a>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="update" type="x-tmpl-mustache">
+		<div class="container-fluid">
+			<div class="center">
+				<h1>Nieuw Schooljaar</h1>
+				<p>Beste Norbertaan gebruiker, omdat leerlingen komen en gaan moeten wij ieder schooljaar onze gegevens updaten zodat Norbertaan blijft werken.<br>Momenteel is dat nog niet gebeurd. Daarom kun je de normale functies niet gebruiken. Hieronder kun je nog wel het rooster raadplegen:</p><br>
+				<a class="btn btn-blue point" href="l.html">Standaard rooster</a><br><br><br><br>
+				<p>Norbertaan is een project van <a href="http://tkon.nl/" target="_blank">Thomas Konings</a></p>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="zelf" type="x-tmpl-mustache">
+		<div class="container-fluid">
+			<div class="center">
+				<h1 id="zelf">Je bent zelf een {{word}}</h1>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="plz" type="x-tmpl-mustache">
+		<div class="container-fluid">
+			<div class="row" id="searcher">
+				<div class="col-md-4">&nbsp;</div>
+				<div class="col-md-4">
+					<div class="center">
+						<img style="filter: grayscale(100%)" src="img/android-icon-144x144.png">
+						<h1>Slecht nieuws</h1>
+						<p>Liefste Norbertaan gebruiker,<br> Zoals je misschien al wist, doe ik dit jaar examen. Daardoor kan ik Norbertaan niet langer onderhouden en ik heb de school daarom gevraagd de website over te kopen. De directie heeft echter besloten dat Norbertaan niet genoeg meerwaarde biedt voor de leerlingen en wil de website dus niet kopen. Daarom ben ik nu genoodzaakt Norbertaan te stoppen.</p>
+						<p><b>Maar... Je kan in actie komen! Druk op de knop hieronder, dan stuurt Norbertaan automatisch een email namens jou om te laten zien dat jij Norbertaan wel heel fijn vindt.</b></p>
+						<a class="btn btn-orange point full" id="protest" onclick="protest()"><span class="fa fa-bullhorn"></span> Protesteer</a>
+						<a class="btn btn-gray point full" id="neuj" onclick="neuj()"><span class="fa fa-close"></span> Nee, ga weg met je website</a>
+					</div>
+				</div>
+				<div class="col-md-4">&nbsp;</div>
+			</div>
+		</div>
+	</template>
+
+	<template data-template-name="ads" type="x-tmpl-mustache">
+		<div style="display:none; position: relative;">
+		  <iframe style="display:none;"></iframe>
+		  <script type="text/javascript">
+		    var data = {
+		      placementid: '393878407367718_1228347683920782',
+		      format: '320x50',
+		      testmode: false,
+		      onAdLoaded: function(element) {
+		        console.log('Audience Network [393878407367718_1228347683920782] ad loaded');
+		        element.style.display = 'block';
+		      },
+		      onAdError: function(errorCode, errorMessage) {
+		        console.log('Audience Network [393878407367718_1228347683920782] error (' + errorCode + ') ' + errorMessage);
+		      }
+		    };
+		    (function(w,l,d,t){var a=t();var b=d.currentScript||(function(){var c=d.getElementsByTagName('script');return c[c.length-1];})();var e=b.parentElement;e.dataset.placementid=data.placementid;var f=function(v){try{return v.document.referrer;}catch(e){}return'';};var g=function(h){var i=h.indexOf('/',h.indexOf('://')+3);if(i===-1){return h;}return h.substring(0,i);};var j=[l.href];var k=false;var m=false;if(w!==w.parent){var n;var o=w;while(o!==n){var h;try{m=m||(o.$sf&&o.$sf.ext);h=o.location.href;}catch(e){k=true;}j.push(h||f(n));n=o;o=o.parent;}}var p=l.ancestorOrigins;if(p){if(p.length>0){data.domain=p[p.length-1];}else{data.domain=g(j[j.length-1]);}}data.url=j[j.length-1];data.channel=g(j[0]);data.width=screen.width;data.height=screen.height;data.pixelratio=w.devicePixelRatio;data.placementindex=w.ADNW&&w.ADNW.Ads?w.ADNW.Ads.length:0;data.crossdomain=k;data.safeframe=!!m;var q={};q.iframe=e.firstElementChild;var r='https://www.facebook.com/audiencenetwork/web/?sdk=5.3';for(var s in data){q[s]=data[s];if(typeof(data[s])!=='function'){r+='&'+s+'='+encodeURIComponent(data[s]);}}q.iframe.src=r;q.tagJsInitTime=a;q.rootElement=e;q.events=[];w.addEventListener('message',function(u){if(u.source!==q.iframe.contentWindow){return;}u.data.receivedTimestamp=t();if(this.sdkEventHandler){this.sdkEventHandler(u.data);}else{this.events.push(u.data);}}.bind(q),false);q.tagJsIframeAppendedTime=t();w.ADNW=w.ADNW||{};w.ADNW.Ads=w.ADNW.Ads||[];w.ADNW.Ads.push(q);w.ADNW.init&&w.ADNW.init(q);})(window,location,document,Date.now||function(){return+new Date;});
+		  </script>
+		  <script type="text/javascript" src="https://connect.facebook.net/en_US/fbadnw.js" async></script>
+		</div>
+	</template>
+
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/mustache.min.js"></script>
+	<script type="text/javascript" src="js/mousetrap.min.js"></script>
+	<script type="text/javascript" src="js/html5shiv.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+</html>
